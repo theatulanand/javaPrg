@@ -1,0 +1,277 @@
+import java.lang.*;
+import java.io.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.net.*;
+import javax.swing.event.*;
+import javax.swing.border.*;
+import java.sql.*;
+public class emp_master1 extends JFrame
+ {
+  private JLabel title,foot,pic,l1,l2,l3,l4;
+  private JTextField t1,t2,t3,t4;
+  private JButton b1,b2,b3,b4,b5,b6,b7;
+  private JComboBox cb1;
+  private JPanel p1,p2,p3,p4;
+  private Container cn;
+  String str1,str2,str3,str4,str,st,s;
+  int f,r;
+  String[] colhead={"emp_Code","Name","Address","bpay"};
+
+  Object[][] data=new Object[50][4];
+  Connection connection;
+  Statement statement;
+  ResultSet rs;
+  Cursor cr=new Cursor(Cursor.HAND_CURSOR);
+  Dimension screensize;
+  public emp_master1()
+  {
+    super("EMPLOYEE MASTER");
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setLayout(null);
+    cn=getContentPane();
+    
+    BevelBorder edge=new BevelBorder(BevelBorder.RAISED);
+    EtchedBorder edge1=new EtchedBorder
+
+(EtchedBorder.RAISED);
+
+    p1=new JPanel();
+    p2=new JPanel();
+    p3=new JPanel();
+
+    title=new JLabel(" ENTRY FORM OF EMPLOYEE 
+
+MASTER");
+    //title.setBounds(0,0,120,50);
+    title.setFont(new Font("Times New Roman",Font.BOLD,35));
+    title.setForeground(Color.WHITE);
+
+    p1.add(title);
+    p1.setBackground(new Color(126,3,6));
+    p1.setBounds(0,0,850,50);
+    cn.add(p1);
+
+    pic=new JLabel();
+    Icon img=new ImageIcon("Tulips.jpg");
+
+    pic.setIcon(img);
+    p2.add(pic);
+//    p2.setBackground(new Color(126,3,6));
+    p2.setBounds(0,50,230,550);
+    cn.add(p2);
+
+
+    p3.setLayout(null);
+    //p3.setBackground(Color.cyan);
+    p3.setBackground(new Color(250,216,217));
+    p3.setBounds(230,50,850,550);
+    cn.add(p3);
+
+
+
+    p3.setBorder(BorderFactory.createTitledBorder("Enter the 
+
+Aanganbari Information"));
+
+    l1=new JLabel("Enter employee code");
+    l1.setFont(new Font("Times New Roman",1,14));
+    l1.setForeground(Color.blue);
+    l1.setBounds(30,50,170,20);
+    p3.add(l1);
+
+    t1=new JTextField();
+    t1.setFont(new Font("Times New Roman",1,14));
+//    t1.setForeground(Color.blue);
+    t1.setBounds(220,50,180,20);
+    p3.add(t1);
+//    t1.addActionListener(new enterListener());
+
+    b1=new JButton("New");
+    p3.add(b1);
+    b1.setToolTipText("Add New Record");
+    b1.setBounds(430,30,120,25);
+//    b1.addActionListener(new addListener());   
+    b1.setMnemonic('N');
+
+    l2=new JLabel("Enter name");
+    l2.setFont(new Font("Times New Roman",1,14));
+    l2.setForeground(Color.blue);
+    l2.setBounds(30,80,170,20);
+    p3.add(l2);
+
+    t2=new JTextField();
+    t2.setFont(new Font("Times New Roman",1,14));
+//    t2.setForeground(Color.blue);
+    t2.setBounds(220,80,180,20);
+//    t2.addActionListener(new enterListener());
+    p3.add(t2);
+
+    b2=new JButton("Save");
+    p3.add(b2);
+    b2.setToolTipText("Save Record");
+    b2.setMnemonic('S');
+//    b2.addActionListener(new saveListener());
+    b2.setBounds(430,70,120,25);
+
+    l3=new JLabel("Enter Address");
+    l3.setFont(new Font("Times New Roman",1,14));
+    l3.setForeground(Color.blue);
+    l3.setBounds(30,110,170,20);
+    p3.add(l3);
+
+    t3=new JTextField();
+    t3.setFont(new Font("Times New Roman",1,14));
+    t3.setForeground(Color.blue);
+//    t3.addActionListener(new enterListener());
+    t3.setBounds(220,110,180,20);
+    p3.add(t3);
+
+
+    b3=new JButton("Search");
+    p3.add(b3);
+    b3.setBounds(430,110,120,25);
+    b3.setToolTipText("Search Record");
+    b3.setMnemonic('C');
+//    b3.addActionListener(new searchListener());
+
+
+    l4=new JLabel("Enter Basic Pay");
+    l4.setFont(new Font("Times New Roman",1,14));
+    l4.setForeground(Color.blue);
+    l4.setBounds(30,140,170,20);
+    p3.add(l4);
+
+    t4=new JTextField();
+    t4.setFont(new Font("Times New Roman",1,14));
+//    t4.setForeground(Color.blue);
+    t4.setBounds(220,140,180,20);
+//    t4.addActionListener(new enterListener());
+    p3.add(t4);
+
+    b4=new JButton("Delete");
+    p3.add(b4);
+    b4.setBounds(430,150,120,25);
+    b4.setToolTipText("Delete Record");
+    b4.setMnemonic('D');
+//    b4.addActionListener(new deleteListener());
+
+
+
+    b5=new JButton("Update");
+    p3.add(b5);
+    b5.setBounds(430,190,120,25);
+    b5.setToolTipText("Update Record");
+    b5.setMnemonic('U');
+//    b5.addActionListener(new updateListener());
+
+
+
+    b6=new JButton("Exit");
+    p3.add(b6);
+    b6.setBounds(430,230,120,25);
+    b6.setToolTipText("Exit Form");
+    b6.setMnemonic('X');
+//    b6.addActionListener(new exitListener());
+
+    b7=new JButton("Load");
+    b7.setBounds(20,254,120,25);
+    b7.setToolTipText("Display all record in Table");
+    b7.setMnemonic('L');
+//    b7.addActionListener(new loadListener());
+    p3.add(b7);
+
+    b1.setCursor(cr);
+    b2.setCursor(cr);
+    b3.setCursor(cr);
+    b4.setCursor(cr);
+    b5.setCursor(cr);
+    b6.setCursor(cr);
+    b7.setCursor(cr);
+   
+
+    l1.setBorder(edge);
+    l2.setBorder(edge);
+    l3.setBorder(edge);
+    l4.setBorder(edge);
+    
+    t1.setBorder(edge1);
+    t2.setBorder(edge1);
+    t3.setBorder(edge1);
+    t4.setBorder(edge1);
+
+    JLabel ln=new JLabel();
+     ln.setForeground(new Color(190,91,14));
+        ln.setText
+
+("===============================================
+
+================================================
+
+================================================
+
+================================================
+
+================================================
+
+================================================
+
+================================================
+
+====================");
+        p3.add(ln);
+        ln.setBounds(0,490,800,16);
+
+        JLabel bt1=new JLabel();
+        bt1.setForeground(new Color(177,20,170));
+        bt1.setText("DEVELOPED BY  :-");
+        p3.add(bt1);
+        bt1.setBounds(350,502,100,15);
+
+       JLabel bt2=new JLabel();
+        bt2.setForeground(new Color(149,21,21));
+        bt2.setText("Sunny kumar");
+        p3.add(bt2);
+        bt2.setBounds(465,502,300,15);
+
+
+
+    JTable table=new JTable(data,colhead);
+    JScrollPane jsp=new JScrollPane(table);
+    table.setFont(new Font("Times New Roman",Font.BOLD,16));
+    table.setForeground(Color.BLUE);
+    
+    p3.add(jsp);
+    jsp.setBounds(20,280,520,200);
+    jsp.setHorizontalScrollBarPolicy
+
+(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    pack();
+    setSize(800,600);
+    screensize=Toolkit.getDefaultToolkit().getScreenSize();
+    setBounds((screensize.width-800)/2,(screensize.height-
+
+600)/2,800,600);
+    setVisible(true);
+    setResizable(false);
+//    connect();
+ //   load();
+    t1.setEditable(false);
+    t2.setEditable(false);
+    t3.setEditable(false);
+    t4.setEditable(false);
+
+
+  }
+
+
+
+   public static void main(String args[])
+  {
+        emp_master1 st= new emp_master1();
+  } 
+
+}
+
+
